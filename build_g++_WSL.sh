@@ -1,1 +1,1 @@
-g++ -std=c++17 -O2 -fopenmp -lpthread OpenMP.cpp -o OpenMP
+g++ OpenMP.cpp -std=c++17  -fopenmp -lpthread -ltbb -Wall -o OpenMP
