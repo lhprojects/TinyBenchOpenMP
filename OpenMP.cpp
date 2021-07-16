@@ -96,21 +96,27 @@ void bench_std_transform(std::string const &title, Op op)
         auto mops0 = 1.;
         {
             set_t0();
-            std::transform(std::execution::seq, a, a + n, a, op);
+	    for(int i = 0; i < 100; ++i) {
+            	std::transform(std::execution::seq, a, a + n, a, op);
+	    }
             mops0 = cal_MOPS(re, n);
-            printf(" %10.2E", cal_MOPS(re, n));
+            printf(" %10.2E", 100*cal_MOPS(re, n));
         }
         {
             set_t0();
-            std::transform(std::execution::par, a, a + n, a, op);
+	    for(int i = 0; i < 100; ++i) {
+            	std::transform(std::execution::par, a, a + n, a, op);
+	    }
             printf(" %10.2f", cal_MOPS(re, n)/mops0);
         }
         {
             set_t0();
-            #pragma omp parallel for
-            for (int i = 0; i < (int)n; ++i) {
-                a[i] = op(a[i]);
-            }
+	    for(int i = 0; i < 100; ++i) {
+            	#pragma omp parallel for
+            	for (int i = 0; i < (int)n; ++i) {
+                	a[i] = op(a[i]);
+            	}
+	    }
             printf(" %10.2f", cal_MOPS(re, n) / mops0);
         }
         printf("\n");
